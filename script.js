@@ -1,10 +1,10 @@
 /**
- * Website Chúc Mừng Sinh Nhật Tuyết Anh
- * Hiệu ứng Canvas Heart, Web Audio Synth, Bánh kem & Pháo hoa
+ * Happy Birthday Tuyết Anh - Pinterest Bento & Scrapbook Edition
+ * Canvas Petals, Music Player, Bento Cake Blowout & Confetti
  */
 
-// --- 1. WEB AUDIO API SYNTHESIZER & AUDIO MANAGER ---
-class BirthdayAudioPlayer {
+// --- 1. WEB AUDIO API SYNTHESIZER (Happy Birthday Melody) ---
+class AestheticAudioPlayer {
   constructor() {
     this.ctx = null;
     this.isPlaying = false;
@@ -13,7 +13,7 @@ class BirthdayAudioPlayer {
     this.audioElement = document.getElementById('bg-audio');
     this.useAudioElement = false;
 
-    // Melody notes for "Happy Birthday": [Frequency (Hz), Duration (s), Delay before next (s)]
+    // Melody notes for "Happy Birthday" (warm music box / celesta)
     this.melody = [
       { f: 261.63, d: 0.35, pause: 0.4 },  // C4
       { f: 261.63, d: 0.25, pause: 0.3 },  // C4
@@ -84,13 +84,13 @@ class BirthdayAudioPlayer {
     osc2.stop(now + duration);
   }
 
-  playSparkle() {
+  playChime() {
     this.init();
     const notes = [523.25, 659.25, 783.99, 1046.50];
     notes.forEach((freq, idx) => {
       setTimeout(() => {
-        this.playBell(freq, 0.4);
-      }, idx * 70);
+        this.playBell(freq, 0.45);
+      }, idx * 65);
     });
   }
 
@@ -98,7 +98,6 @@ class BirthdayAudioPlayer {
     this.init();
     this.isPlaying = true;
 
-    // Check if external audio element can play
     if (this.audioElement && this.audioElement.currentSrc && !this.audioElement.error) {
       const playPromise = this.audioElement.play();
       if (playPromise !== undefined) {
@@ -154,13 +153,13 @@ class BirthdayAudioPlayer {
   }
 }
 
-const audioPlayer = new BirthdayAudioPlayer();
+const audioPlayer = new AestheticAudioPlayer();
 
-// --- 2. CANVASES: 3D PULSING HEART & FLOATING SPARKLES ---
-const canvas = document.getElementById('bg-canvas');
+// --- 2. AMBIENT DREAMY SAKURA & STARDUST CANVAS ---
+const canvas = document.getElementById('ambient-canvas');
 const ctx = canvas.getContext('2d');
-
 let width, height;
+
 function resizeCanvas() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
@@ -168,133 +167,120 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-function getHeartPoint(t, scale) {
-  const x = 16 * Math.pow(Math.sin(t), 3);
-  const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
-  return { x: x * scale, y: y * scale };
-}
-
-const HEART_PARTICLE_COUNT = 320;
-const heartParticles = [];
-
-for (let i = 0; i < HEART_PARTICLE_COUNT; i++) {
-  const t = Math.PI * 2 * Math.random();
-  const scale = 11 + Math.random() * 2.5;
-  const target = getHeartPoint(t, scale);
-  heartParticles.push({
-    baseX: target.x,
-    baseY: target.y,
-    x: target.x,
-    y: target.y,
-    vx: (Math.random() - 0.5) * 0.5,
-    vy: (Math.random() - 0.5) * 0.5,
-    size: Math.random() * 2.5 + 1.2,
-    alpha: Math.random() * 0.7 + 0.3,
-    color: Math.random() > 0.3 ? '#ff6b8b' : (Math.random() > 0.5 ? '#ffd166' : '#ff9a9e'),
-    offset: Math.random() * Math.PI * 2
-  });
-}
-
-const AMBIENT_COUNT = 60;
-const ambientParticles = [];
-for (let i = 0; i < AMBIENT_COUNT; i++) {
-  ambientParticles.push({
+const PETAL_COUNT = 38;
+const petals = [];
+for (let i = 0; i < PETAL_COUNT; i++) {
+  petals.push({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
-    size: Math.random() * 3 + 1,
-    speedY: - (Math.random() * 0.8 + 0.3),
-    speedX: (Math.random() - 0.5) * 0.5,
-    alpha: Math.random() * 0.6 + 0.2,
-    color: Math.random() > 0.5 ? 'rgba(255, 107, 139, ' : 'rgba(255, 209, 102, '
+    size: Math.random() * 8 + 6,
+    speedX: Math.random() * 1 + 0.3,
+    speedY: Math.random() * 1.2 + 0.6,
+    rotation: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.03,
+    color: Math.random() > 0.4 ? 'rgba(254, 205, 211, ' : 'rgba(251, 113, 133, ',
+    alpha: Math.random() * 0.4 + 0.2
   });
 }
 
-let tick = 0;
-function animateCanvas() {
+function animateAmbient() {
   ctx.clearRect(0, 0, width, height);
-  tick += 0.025;
 
-  const pulse = Math.sin(tick * 2) * 0.08 + 1;
-  const centerX = width / 2;
-  const centerY = height * 0.38;
-
-  heartParticles.forEach(p => {
-    const px = centerX + p.baseX * pulse + Math.sin(tick + p.offset) * 3;
-    const py = centerY + p.baseY * pulse + Math.cos(tick + p.offset) * 3;
-
-    ctx.beginPath();
-    ctx.arc(px, py, p.size, 0, Math.PI * 2);
-    ctx.fillStyle = p.color;
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = p.color;
-    ctx.globalAlpha = p.alpha;
-    ctx.fill();
-  });
-
-  ambientParticles.forEach(p => {
-    p.y += p.speedY;
+  petals.forEach(p => {
     p.x += p.speedX;
-    if (p.y < -10) {
-      p.y = height + 10;
+    p.y += p.speedY;
+    p.rotation += p.rotSpeed;
+
+    if (p.y > height + 20) {
+      p.y = -20;
       p.x = Math.random() * width;
     }
+    if (p.x > width + 20) {
+      p.x = -20;
+    }
 
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation);
     ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    // Sakura petal shape
+    ctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
     ctx.fillStyle = p.color + p.alpha + ')';
-    ctx.shadowBlur = 6;
-    ctx.shadowColor = p.color + '1)';
-    ctx.globalAlpha = p.alpha;
     ctx.fill();
+    ctx.restore();
   });
 
-  ctx.globalAlpha = 1.0;
-  ctx.shadowBlur = 0;
-
-  requestAnimationFrame(animateCanvas);
+  requestAnimationFrame(animateAmbient);
 }
-animateCanvas();
+animateAmbient();
 
-// --- 3. GIFT BOX OPENING INTERACTION ---
-const openGiftBtn = document.getElementById('open-gift-btn');
-const introScreen = document.getElementById('intro-screen');
-const mainContent = document.getElementById('main-content');
-const musicToggleBtn = document.getElementById('music-toggle-btn');
-const musicIcon = document.getElementById('music-icon');
+// --- 3. MUSIC DOCK & SPOTIFY CONTROLS ---
+const musicBtn = document.getElementById('music-btn');
+const spotifyPlayToggle = document.getElementById('spotify-play-toggle');
+const playStateIcon = document.getElementById('play-state-icon');
+const likeBtn = document.getElementById('like-btn');
+const likeCount = document.getElementById('like-count');
 
-openGiftBtn.addEventListener('click', () => {
-  audioPlayer.playSparkle();
-  triggerCelebrationConfetti();
+function updateMusicUI(isPlaying) {
+  if (isPlaying) {
+    musicBtn.classList.add('active');
+    playStateIcon.textContent = '❚❚';
+    spotifyPlayToggle.querySelector('span:last-child').textContent = 'Pause';
+  } else {
+    musicBtn.classList.remove('active');
+    playStateIcon.textContent = '▶';
+    spotifyPlayToggle.querySelector('span:last-child').textContent = 'Play';
+  }
+}
 
-  setTimeout(() => {
-    audioPlayer.startMelody();
-    musicToggleBtn.classList.add('active');
-  }, 500);
-
-  introScreen.classList.add('fade-out');
-  setTimeout(() => {
-    introScreen.style.display = 'none';
-    mainContent.classList.remove('hidden');
-    startLetterTyping();
-  }, 700);
+musicBtn.addEventListener('click', () => {
+  const isPlaying = audioPlayer.toggle();
+  updateMusicUI(isPlaying);
 });
 
-musicToggleBtn.addEventListener('click', () => {
+spotifyPlayToggle.addEventListener('click', () => {
   const isPlaying = audioPlayer.toggle();
-  if (isPlaying) {
-    musicToggleBtn.classList.add('active');
-    musicIcon.textContent = '🎵';
+  updateMusicUI(isPlaying);
+});
+
+// Auto-start music on first user click anywhere (respecting browser audio policy)
+let hasInteracted = false;
+document.addEventListener('click', () => {
+  if (!hasInteracted) {
+    hasInteracted = true;
+    audioPlayer.startMelody();
+    updateMusicUI(true);
+  }
+}, { once: true });
+
+// Like button toggle
+let isLiked = false;
+likeBtn.addEventListener('click', () => {
+  isLiked = !isLiked;
+  audioPlayer.playChime();
+  if (isLiked) {
+    likeCount.textContent = '1,000,000 ❤️';
+    likeBtn.style.background = '#fecdd3';
+    likeBtn.style.borderColor = '#f43f5e';
+    if (typeof confetti === 'function') {
+      confetti({
+        particleCount: 30,
+        spread: 45,
+        origin: { y: 0.7 }
+      });
+    }
   } else {
-    musicToggleBtn.classList.remove('active');
-    musicIcon.textContent = '🔇';
+    likeCount.textContent = '999k+';
+    likeBtn.style.background = '#fff1f2';
+    likeBtn.style.borderColor = '#fecdd3';
   }
 });
 
-// --- 4. INTERACTIVE BIRTHDAY CAKE & BLOW CANDLE ---
+// --- 4. BENTO CAKE & CANDLE BLOWOUT ---
 const candle = document.getElementById('candle');
 const flame = document.getElementById('flame');
-const cakeInstruction = document.getElementById('cake-instruction');
-const wishSuccess = document.getElementById('wish-success');
+const cakeHint = document.getElementById('cake-hint');
+const wishBanner = document.getElementById('wish-banner');
 let candleBlown = false;
 
 function blowOutCandle() {
@@ -302,20 +288,26 @@ function blowOutCandle() {
   candleBlown = true;
 
   flame.classList.add('extinguished');
-  cakeInstruction.style.display = 'none';
-  wishSuccess.classList.remove('hidden');
+  cakeHint.textContent = 'Ước nguyện đã thành hiện thực! 🌸';
+  wishBanner.classList.remove('hidden');
 
-  audioPlayer.playSparkle();
-  triggerSuperConfetti();
+  audioPlayer.playChime();
+
+  if (typeof confetti === 'function') {
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      origin: { y: 0.5 },
+      colors: ['#f43f5e', '#fecdd3', '#fef08a', '#ffffff', '#fb7185']
+    });
+  }
 }
 
 candle.addEventListener('click', blowOutCandle);
 document.getElementById('cake').addEventListener('click', blowOutCandle);
 
-// --- 5. HEARTFELT LETTER TYPING EFFECT ---
-const letterText = `Gửi Tuyết Anh yêu quý,
-
-Hôm nay là một ngày thật dịu dàng và đặc biệt — ngày đánh dấu sự xuất hiện của một cô gái vô cùng xinh xắn, ngọt ngào và ấm áp.
+// --- 5. HANDWRITTEN LETTER TYPING EFFECT ---
+const letterText = `Hôm nay là một ngày thật dịu dàng và đặc biệt — ngày đánh dấu sự xuất hiện của một cô gái vô cùng xinh xắn, ngọt ngào và ấm áp.
 
 Thêm một tuổi mới, chúc Tuyết Anh luôn giữ trọn nụ cười tươi tắn trên môi. Mong em nhí yêu luôn tìm thấy niềm vui trong những điều giản đơn nhất, tự tin bước đi trên con đường mình đã chọn và gặt hái thật nhiều thành công rực rỡ.
 
@@ -323,40 +315,41 @@ Dù ngoài kia có những ngày nắng hay mưa, mong rằng trái tim Tuyết 
 
 Happy Birthday, Tuyết Anh! 💖🎂🎉`;
 
-function startLetterTyping() {
-  const textContainer = document.getElementById('typed-letter');
-  const cursor = document.getElementById('typing-cursor');
+function startTyping() {
+  const textContainer = document.getElementById('typed-text');
+  const cursor = document.getElementById('type-cursor');
   let charIdx = 0;
 
   function typeChar() {
     if (charIdx < letterText.length) {
       textContainer.textContent += letterText.charAt(charIdx);
       charIdx++;
-      setTimeout(typeChar, 35);
+      setTimeout(typeChar, 32);
     } else {
       cursor.style.display = 'none';
     }
   }
-  setTimeout(typeChar, 800);
+  setTimeout(typeChar, 400);
 }
+startTyping();
 
-// --- 6. WISH CARDS MODAL INTERACTION ---
-const wishCards = document.querySelectorAll('.wish-card');
+// --- 6. PASTEL STICKY NOTES MODAL ---
+const stickyNotes = document.querySelectorAll('.sticky-note');
 const wishModal = document.getElementById('wish-modal');
 const modalWishText = document.getElementById('modal-wish-text');
 const modalCloseBtn = document.getElementById('modal-close-btn');
-const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+const modalOkBtn = document.getElementById('modal-ok-btn');
 
-wishCards.forEach(card => {
-  card.addEventListener('click', () => {
-    const wish = card.getAttribute('data-wish');
+stickyNotes.forEach(note => {
+  note.addEventListener('click', () => {
+    const wish = note.getAttribute('data-wish');
     modalWishText.textContent = wish;
     wishModal.classList.remove('hidden');
-    audioPlayer.playSparkle();
+    audioPlayer.playChime();
     if (typeof confetti === 'function') {
       confetti({
-        particleCount: 50,
-        spread: 60,
+        particleCount: 40,
+        spread: 50,
         origin: { y: 0.6 }
       });
     }
@@ -366,46 +359,17 @@ wishCards.forEach(card => {
 function closeModal() {
   wishModal.classList.add('hidden');
 }
-
 modalCloseBtn.addEventListener('click', closeModal);
-modalConfirmBtn.addEventListener('click', closeModal);
+modalOkBtn.addEventListener('click', closeModal);
 wishModal.addEventListener('click', (e) => {
   if (e.target === wishModal) closeModal();
 });
 
-// --- 7. FIREWORKS & CONFETTI EFFECTS ---
-function triggerCelebrationConfetti() {
-  if (typeof confetti !== 'function') return;
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 },
-    colors: ['#ff6b8b', '#ffd166', '#ff85a1', '#ffffff']
-  });
-}
-
-function triggerSuperConfetti() {
-  if (typeof confetti !== 'function') return;
-  const count = 200;
-  const defaults = { origin: { y: 0.7 } };
-
-  function fire(particleRatio, opts) {
-    confetti(Object.assign({}, defaults, opts, {
-      particleCount: Math.floor(count * particleRatio)
-    }));
-  }
-
-  fire(0.25, { spread: 26, startVelocity: 55, colors: ['#ff6b8b', '#ffd166'] });
-  fire(0.2, { spread: 60, colors: ['#ff9a9e', '#fecfef'] });
-  fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-  fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, colors: ['#ffd166', '#ffb703', '#ffffff'] });
-  fire(0.1, { spread: 120, startVelocity: 45 });
-}
-
+// --- 7. FIREWORKS CELEBRATION BUTTON ---
 const fireworkBtn = document.getElementById('firework-btn');
 fireworkBtn.addEventListener('click', () => {
-  audioPlayer.playSparkle();
-  const duration = 3.5 * 1000;
+  audioPlayer.playChime();
+  const duration = 3 * 1000;
   const animationEnd = Date.now() + duration;
   const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1500 };
 
@@ -414,47 +378,22 @@ fireworkBtn.addEventListener('click', () => {
     if (timeLeft <= 0) {
       return clearInterval(interval);
     }
-    const particleCount = 50 * (timeLeft / duration);
+    const particleCount = 45 * (timeLeft / duration);
     if (typeof confetti === 'function') {
       confetti(Object.assign({}, defaults, {
         particleCount,
-        origin: { x: Math.random() * 0.8 + 0.1, y: Math.random() - 0.2 }
+        origin: { x: Math.random() * 0.8 + 0.1, y: Math.random() - 0.2 },
+        colors: ['#f43f5e', '#fecdd3', '#fef08a', '#c084fc', '#6ee7b7']
       }));
     }
-  }, 250);
+  }, 220);
 });
 
-// --- 8. CLICK ANYWHERE TO SPAWN FLOATING HEARTS ---
-document.addEventListener('click', (e) => {
-  if (e.target.closest('button') || e.target.closest('.wish-card') || e.target.closest('.gift-box-wrapper')) return;
-
-  const heart = document.createElement('div');
-  heart.className = 'floating-click-heart';
-  heart.innerHTML = ['💖', '🌸', '✨', '🎂', '⭐'][Math.floor(Math.random() * 5)];
-  heart.style.position = 'fixed';
-  heart.style.left = `${e.clientX}px`;
-  heart.style.top = `${e.clientY}px`;
-  heart.style.pointerEvents = 'none';
-  heart.style.fontSize = `${Math.random() * 18 + 18}px`;
-  heart.style.zIndex = '9999';
-  heart.style.transform = 'translate(-50%, -50%) scale(0)';
-  heart.style.transition = 'transform 0.8s ease-out, opacity 0.8s ease-out';
-  document.body.appendChild(heart);
-
-  requestAnimationFrame(() => {
-    heart.style.transform = `translate(-50%, -${Math.random() * 60 + 50}px) scale(1.3) rotate(${Math.random() * 40 - 20}deg)`;
-    heart.style.opacity = '0';
-  });
-
-  setTimeout(() => {
-    heart.remove();
-  }, 850);
-});
-
-// --- 9. PHOTO UPLOADER / LIVE MEMORY CHANGER ---
+// --- 8. PHOTO UPLOADER / LIVE MEMORY CHANGER ---
 const photoUploadBtn = document.getElementById('photo-upload-btn');
 const imageInput = document.getElementById('image-input');
 const galleryContainer = document.getElementById('gallery-container');
+const albumArt = document.querySelector('.album-art');
 
 photoUploadBtn.addEventListener('click', () => {
   imageInput.click();
@@ -465,34 +404,67 @@ imageInput.addEventListener('change', (e) => {
   if (!files.length) return;
 
   galleryContainer.innerHTML = '';
-
+  const washiTapes = ['tape-peach', 'tape-lavender', 'tape-mint'];
+  const rotations = ['tape-top-left', 'tape-center rotate-right', 'tape-top-right rotate-left'];
   const captions = [
-    'Nụ cười ngọt ngào của Tuyết Anh ✨',
+    'Nụ cười ngọt ngào của em nhí ✨',
     'Khoảnh khắc rực rỡ nhất 💖',
     'Mãi xinh đẹp và hạnh phúc 🌸',
-    'Kỷ niệm tuyệt vời 🎂',
-    'Thiên thần nhỏ Tuyết Anh 👑'
+    'Kỷ niệm tuyệt vời 🎂'
   ];
 
   files.forEach((file, index) => {
     const reader = new FileReader();
     reader.onload = (event) => {
+      if (index === 0 && albumArt) {
+        albumArt.src = event.target.result;
+      }
       const polaroid = document.createElement('div');
-      const rotateClass = index % 2 === 0 ? 'rotate-left' : 'rotate-right';
-      polaroid.className = `polaroid-item ${rotateClass}`;
-
+      polaroid.className = `polaroid-frame ${rotations[index % rotations.length]}`;
       polaroid.innerHTML = `
-        <div class="pin">📌</div>
-        <div class="polaroid-img-wrapper">
+        <div class="washi-tape ${washiTapes[index % washiTapes.length]}"></div>
+        <div class="polaroid-photo-box">
           <img src="${event.target.result}" alt="Tuyết Anh" class="polaroid-img" />
         </div>
-        <div class="polaroid-caption">${captions[index % captions.length]}</div>
+        <div class="polaroid-footer">
+          <span class="handwritten-caption">${captions[index % captions.length]}</span>
+          <span class="sticker-heart">🌸</span>
+        </div>
       `;
       galleryContainer.appendChild(polaroid);
     };
     reader.readAsDataURL(file);
   });
 
-  audioPlayer.playSparkle();
-  triggerCelebrationConfetti();
+  audioPlayer.playChime();
+  if (typeof confetti === 'function') {
+    confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+  }
+});
+
+// --- 9. CLICK ANYWHERE FLOATING ICONS ---
+document.addEventListener('click', (e) => {
+  if (e.target.closest('button') || e.target.closest('.sticky-note') || e.target.closest('.bento-cake-container')) return;
+
+  const heart = document.createElement('div');
+  heart.className = 'click-floating-icon';
+  heart.innerHTML = ['🌸', '✨', '💖', '🍰', '⭐', '🎀'][Math.floor(Math.random() * 6)];
+  heart.style.position = 'fixed';
+  heart.style.left = `${e.clientX}px`;
+  heart.style.top = `${e.clientY}px`;
+  heart.style.pointerEvents = 'none';
+  heart.style.fontSize = `${Math.random() * 16 + 18}px`;
+  heart.style.zIndex = '9999';
+  heart.style.transform = 'translate(-50%, -50%) scale(0)';
+  heart.style.transition = 'transform 0.8s cubic-bezier(0.1, 0.8, 0.3, 1), opacity 0.8s ease-out';
+  document.body.appendChild(heart);
+
+  requestAnimationFrame(() => {
+    heart.style.transform = `translate(-50%, -${Math.random() * 60 + 40}px) scale(1.3) rotate(${Math.random() * 30 - 15}deg)`;
+    heart.style.opacity = '0';
+  });
+
+  setTimeout(() => {
+    heart.remove();
+  }, 850);
 });

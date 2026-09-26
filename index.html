@@ -3,285 +3,295 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chúc Mừng Sinh Nhật Tuyết Anh! 🎂✨</title>
+  <title>Happy Birthday Tuyết Anh ✨💖</title>
+  
+  <!-- Aesthetic Google Fonts: Editorial Serif + Modern Clean Sans + Handwritten Script -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style.css" />
-  <!-- Canvas Confetti Library -->
+  <!-- Confetti Library -->
   <script src="confetti.browser.min.js"></script>
-  <script>
-    if (typeof confetti === 'undefined') {
-      const cdnScript = document.createElement('script');
-      cdnScript.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
-      document.head.appendChild(cdnScript);
-    }
-  </script>
 </head>
 <body>
-  <!-- Background Canvas for Glowing Heart & Ambient Floating Particles -->
-  <canvas id="bg-canvas"></canvas>
+  <!-- Ambient Dreamy Background Canvas (Floating Petals & Stardust) -->
+  <canvas id="ambient-canvas"></canvas>
 
-  <!-- Audio Controls Floating Bar -->
-  <div class="audio-control-container">
-    <button id="music-toggle-btn" class="glow-btn round-btn" title="Bật/Tắt nhạc nền">
-      <span id="music-icon">🎵</span>
-      <span class="btn-tooltip">Nhạc sinh nhật</span>
+  <!-- Floating Quick Actions -->
+  <div class="floating-dock">
+    <button id="music-btn" class="dock-pill active" title="Bật/Tắt nhạc sinh nhật">
+      <span class="music-bars">
+        <span class="bar b1"></span>
+        <span class="bar b2"></span>
+        <span class="bar b3"></span>
+      </span>
+      <span id="music-label">Birthday Melody</span>
     </button>
-    <button id="photo-upload-btn" class="glow-btn round-btn" title="Thêm ảnh kỷ niệm">
+    <button id="photo-upload-btn" class="dock-pill" title="Tải ảnh mới">
       <span>📷</span>
-      <span class="btn-tooltip">Đổi ảnh</span>
+      <span>Đổi ảnh</span>
     </button>
   </div>
   <input type="file" id="image-input" accept="image/*" multiple style="display: none;" />
 
-  <!-- Hidden Audio Player for Custom MP3 (optional fallback to Web Audio API Synth) -->
+  <!-- Hidden Audio Player for custom MP3 with Web Audio Synth fallback -->
   <audio id="bg-audio" loop preload="auto">
     <source src="music.mp3" type="audio/mp3">
   </audio>
 
-  <!-- INTRO STAGE: Gift Box / Sealed Envelope -->
-  <div id="intro-screen" class="intro-overlay">
-    <div class="intro-content">
-      <div class="sparkle-title">
-        <span class="sub-badge">✨ A Special Surprise ✨</span>
-        <h1 class="glow-text">Gửi Tuyết Anh</h1>
-        <p class="intro-subtext">Hôm nay là một ngày thật đặc biệt. Có một món quà bí mật đang chờ em nhí yêu mở ra...</p>
-      </div>
+  <!-- MAIN SCRAPBOOK CONTAINER -->
+  <div class="scrapbook-wrapper">
 
-      <!-- 3D Gift Box -->
-      <div class="gift-box-wrapper" id="open-gift-btn">
-        <div class="gift-box">
-          <div class="gift-lid">
-            <div class="ribbon-bow"></div>
+    <!-- TOP AESTHETIC TAGLINE -->
+    <header class="aesthetic-header">
+      <div class="edition-badge">
+        <span class="sparkle-icon">✦</span>
+        <span>SPECIAL EDITION • HAPPY BIRTHDAY</span>
+        <span class="sparkle-icon">✦</span>
+      </div>
+      <h1 class="editorial-title">
+        Happy Birthday, <span class="cursive-name">Tuyết Anh</span>
+      </h1>
+      <p class="editorial-subtitle">
+        “Gửi đến em nhí yêu cả một bầu trời dịu dàng, ngọt ngào và ngập tràn hạnh phúc!”
+      </p>
+      <div class="washi-divider"></div>
+    </header>
+
+    <!-- BENTO GRID SECTION (PINTEREST STYLE) -->
+    <div class="bento-grid">
+
+      <!-- 1. BENTO CAKE CARD (Interactive Candle Blowout) -->
+      <div class="bento-card cake-card">
+        <div class="card-tag">🎂 BENTO CAKE</div>
+        <div class="cake-header-text">
+          <h3>Thổi nến & Ước Nguyện</h3>
+          <p id="cake-hint">Chạm vào ngọn nến để thổi nến nhé em nhí yêu ✨</p>
+        </div>
+
+        <div class="bento-cake-container" id="cake">
+          <!-- Single Tall Pastel Aesthetic Candle -->
+          <div class="aesthetic-candle" id="candle">
+            <div class="candle-flame" id="flame">
+              <div class="flame-inner"></div>
+            </div>
+            <div class="candle-wick"></div>
+            <div class="candle-stick"></div>
           </div>
-          <div class="gift-body">
-            <div class="ribbon-vertical"></div>
-            <div class="ribbon-horizontal"></div>
+
+          <!-- Cute Korean Bento Cake -->
+          <div class="korean-bento-cake">
+            <!-- Top Cream Layer with Cherries & Scalloped Piped Cream -->
+            <div class="cake-top-tier">
+              <div class="cherries-row">
+                <span class="cherry c1">🍒</span>
+                <span class="cherry c2">🍓</span>
+                <span class="cherry c3">🍒</span>
+              </div>
+              <div class="piped-cream-border">
+                <span class="piped-dollop"></span>
+                <span class="piped-dollop"></span>
+                <span class="piped-dollop"></span>
+                <span class="piped-dollop"></span>
+                <span class="piped-dollop"></span>
+                <span class="piped-dollop"></span>
+                <span class="piped-dollop"></span>
+              </div>
+            </div>
+
+            <!-- Cake Sponge & Middle Icing Layer -->
+            <div class="cake-main-body">
+              <div class="cake-ribbon-tag">
+                <span>🎀 Tuyết Anh • Sweet Day 🎀</span>
+              </div>
+              <div class="bottom-piped-border">
+                <span class="pearl-piping"></span>
+                <span class="pearl-piping"></span>
+                <span class="pearl-piping"></span>
+                <span class="pearl-piping"></span>
+                <span class="pearl-piping"></span>
+                <span class="pearl-piping"></span>
+                <span class="pearl-piping"></span>
+                <span class="pearl-piping"></span>
+              </div>
+            </div>
+
+            <!-- Aesthetic Ceramic Pedestal Stand -->
+            <div class="cake-porcelain-stand">
+              <div class="stand-rim"></div>
+              <div class="stand-base"></div>
+            </div>
           </div>
         </div>
-        <p class="click-hint">Chạm vào hộp quà để mở ✨</p>
+
+        <!-- Wish Made Alert -->
+        <div class="wish-banner hidden" id="wish-banner">
+          <span>✨ Ước nguyện đã bay tới các vì sao! Chúc em nhí yêu tuổi mới trọn vẹn niềm vui! 💖</span>
+        </div>
       </div>
+
+      <!-- 2. SPOTIFY AESTHETIC PLAYER CARD -->
+      <div class="bento-card spotify-card">
+        <div class="card-tag">🎧 NOW PLAYING</div>
+        <div class="spotify-inner">
+          <div class="spotify-album-cover">
+            <img src="photo1.jpg" alt="Tuyết Anh" class="album-art" />
+            <div class="playing-pulse"></div>
+          </div>
+          <div class="spotify-info">
+            <div class="track-title">Happy Birthday To You ✨</div>
+            <div class="track-artist">Dành riêng cho Tuyết Anh</div>
+            <div class="spotify-progress-wrap">
+              <div class="progress-bar">
+                <div class="progress-fill"></div>
+              </div>
+              <div class="progress-time">
+                <span>0:26</span>
+                <span>3:14</span>
+              </div>
+            </div>
+            <div class="spotify-controls">
+              <button class="like-btn" id="like-btn" title="Thả tim">
+                <span id="like-icon">💖</span>
+                <span id="like-count">999k+</span>
+              </button>
+              <button class="play-pill-btn" id="spotify-play-toggle">
+                <span id="play-state-icon">❚❚</span>
+                <span>Pause</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. VINTAGE WAX-SEALED LOVE LETTER CARD -->
+      <div class="bento-card letter-card">
+        <div class="card-tag">💌 HANDWRITTEN LETTER</div>
+        <div class="stationery-paper">
+          <div class="wax-seal">
+            <span>TA</span>
+          </div>
+          <div class="letter-date">26 Tháng 09 • Birthday Letter</div>
+          <div class="letter-content">
+            <h4 class="letter-dear">Gửi em nhí yêu quý,</h4>
+            <p class="typed-body" id="typed-text"></p>
+            <span class="cursor" id="type-cursor">|</span>
+          </div>
+          <div class="letter-sign">
+            <span>Thương mến trao tặng Tuyết Anh 🌸</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. PINTEREST POLAROID SCRAPBOOK (3 REAL PHOTOS) -->
+      <div class="bento-card gallery-card">
+        <div class="card-tag">📸 SWEET MEMORIES</div>
+        <div class="scrapbook-gallery" id="gallery-container">
+
+          <!-- Polaroid 1 -->
+          <div class="polaroid-frame tape-top-left">
+            <div class="washi-tape tape-peach"></div>
+            <div class="polaroid-photo-box">
+              <img src="photo1.jpg" alt="Tuyết Anh" class="polaroid-img" />
+            </div>
+            <div class="polaroid-footer">
+              <span class="handwritten-caption">Nụ cười tỏa nắng ✨</span>
+              <span class="sticker-heart">🌸</span>
+            </div>
+          </div>
+
+          <!-- Polaroid 2 -->
+          <div class="polaroid-frame tape-center rotate-right">
+            <div class="washi-tape tape-lavender"></div>
+            <div class="polaroid-photo-box">
+              <img src="photo2.jpg" alt="Tuyết Anh" class="polaroid-img" />
+            </div>
+            <div class="polaroid-footer">
+              <span class="handwritten-caption">Rực rỡ & Đáng yêu 💖</span>
+              <span class="sticker-heart">✨</span>
+            </div>
+          </div>
+
+          <!-- Polaroid 3 -->
+          <div class="polaroid-frame tape-top-right rotate-left">
+            <div class="washi-tape tape-mint"></div>
+            <div class="polaroid-photo-box">
+              <img src="photo3.jpg" alt="Tuyết Anh" class="polaroid-img" />
+            </div>
+            <div class="polaroid-footer">
+              <span class="handwritten-caption">Mãi luôn hạnh phúc 🎀</span>
+              <span class="sticker-heart">🍰</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 5. PASTEL WISH STICKY NOTES (Interactive Blessings) -->
+      <div class="bento-card sticky-notes-card">
+        <div class="card-tag">✨ WISHES FOR YOU</div>
+        <div class="sticky-notes-grid">
+          <div class="sticky-note note-pink" data-wish="🌸 Chúc em nhí yêu luôn giữ trọn nét cười trong trẻo, ngày càng xinh đẹp, rạng rỡ và tự tin tỏa sáng!">
+            <div class="pin-thumbtack">📍</div>
+            <h4>Nhan sắc</h4>
+            <p>Mãi xinh tươi như đóa hoa sớm mai 🌸</p>
+          </div>
+
+          <div class="sticky-note note-yellow" data-wish="💎 Chúc em nhí yêu tuổi mới vạn sự hanh thông, học tập và công việc luôn thành công rực rỡ!">
+            <div class="pin-thumbtack">📍</div>
+            <h4>Tương lai</h4>
+            <p>Mọi dự định đều đạt kết quả xuất sắc 🌟</p>
+          </div>
+
+          <div class="sticky-note note-lavender" data-wish="🍀 Chúc em nhí yêu mỗi sáng thức dậy đều đón nhận niềm vui, sự bình yên và những điều may mắn nhất!">
+            <div class="pin-thumbtack">📍</div>
+            <h4>Bình an</h4>
+            <p>Ngập tràn may mắn & hạnh phúc mỗi ngày 🍀</p>
+          </div>
+
+          <div class="sticky-note note-mint" data-wish="💖 Chúc em nhí yêu luôn được yêu thương, trân trọng và sống trọn vẹn trong vòng tay ấm áp nhất!">
+            <div class="pin-thumbtack">📍</div>
+            <h4>Yêu thương</h4>
+            <p>Luôn được cưng chiều và bảo bọc 💖</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. CELEBRATION FIREWORKS & CONFETTI TRIGGER -->
+      <div class="bento-card celebration-card">
+        <div class="card-tag">🎆 SPECIAL MOMENT</div>
+        <div class="celebration-content">
+          <h3>Gửi Ngàn Pháo Hoa Chúc Mừng 🎆</h3>
+          <p>Bấm nút bên dưới để thắp sáng cả bầu trời ngập tràn ánh sao dành tặng Tuyết Anh!</p>
+          <button id="firework-btn" class="aesthetic-firework-btn">
+            <span>Bắn Pháo Hoa Ngay ✨</span>
+          </button>
+        </div>
+      </div>
+
     </div>
-  </div>
 
-  <!-- MAIN EXPERIENCE CONTAINER -->
-  <main id="main-content" class="main-container hidden">
-
-    <!-- HERO SECTION -->
-    <section class="hero-section">
-      <div class="hero-header">
-        <div class="crown-badge">👑 Happy Birthday 👑</div>
-        <h1 class="main-title">
-          Chúc Mừng Sinh Nhật <span class="highlight-name">Tuyết Anh</span>
-        </h1>
-        <p class="hero-quote">“Chúc em nhí yêu tuổi mới xinh đẹp như hoa, ngọt ngào như kẹo và luôn rạng ngời hạnh phúc!”</p>
-      </div>
-
-      <!-- INTERACTIVE BIRTHDAY CAKE -->
-      <div class="cake-area">
-        <div class="cake-instruction" id="cake-instruction">
-          <span class="icon-sparkle">🕯️</span> Chạm vào ngọn nến để thổi nến và ước nhé!
-        </div>
-
-        <div class="cake-container" id="cake">
-          <!-- Candle at the top -->
-          <div class="candle" id="candle">
-            <div class="flame" id="flame">
-              <div class="flame-core"></div>
-            </div>
-            <div class="wick"></div>
-            <div class="candle-body"></div>
-          </div>
-
-          <!-- Top Layer -->
-          <div class="layer layer-top">
-            <div class="strawberries-row">
-              <span class="strawberry">🍓</span>
-              <span class="strawberry">🍓</span>
-              <span class="strawberry">🍓</span>
-            </div>
-            <div class="frosting frosting-top"></div>
-          </div>
-
-          <!-- Middle Layer -->
-          <div class="layer layer-middle">
-            <div class="frosting-scallops">
-              <span class="scallop"></span><span class="scallop"></span><span class="scallop"></span>
-              <span class="scallop"></span><span class="scallop"></span><span class="scallop"></span>
-            </div>
-            <div class="layer-decorations">
-              <span class="pearl">✨</span>
-              <span class="pearl">💖</span>
-              <span class="pearl">✨</span>
-            </div>
-          </div>
-
-          <!-- Bottom Layer -->
-          <div class="layer layer-bottom">
-            <div class="frosting-scallops frosting-bottom-scallops">
-              <span class="scallop"></span><span class="scallop"></span><span class="scallop"></span>
-              <span class="scallop"></span><span class="scallop"></span><span class="scallop"></span>
-              <span class="scallop"></span><span class="scallop"></span>
-            </div>
-            <div class="bottom-ribbon">
-              <span>🌸 Tuyết Anh 🌸</span>
-            </div>
-          </div>
-
-          <!-- Plate and Pedestal -->
-          <div class="plate"></div>
-          <div class="plate-stand"></div>
-        </div>
-
-        <!-- Wish Made Notification -->
-        <div class="wish-success-card hidden" id="wish-success">
-          <div class="sparkle-stars">✨ 🎉 💖 ✨</div>
-          <h3>Ước nguyện đã được gửi tới các vì sao!</h3>
-          <p>Mọi điều ước của Tuyết Anh trong ngày hôm nay chắc chắn sẽ thành hiện thực.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 2: HEARTFELT LETTER -->
-    <section class="letter-section">
-      <div class="letter-container">
-        <div class="letter-header">
-          <span class="stamp">💌 Happy Birthday</span>
-          <div class="letter-heading">Thư Gửi Tuyết Anh</div>
-        </div>
-        <div class="letter-body">
-          <p class="typed-text" id="typed-letter"></p>
-          <span class="cursor" id="typing-cursor">|</span>
-        </div>
-        <div class="letter-footer">
-          <p class="signature">Thương mến gửi tặng Tuyết Anh 🌸</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 3: WISH STARS / WISH BALLOONS -->
-    <section class="wishes-section">
-      <h2 class="section-title">✨ Chạm Vào Những Hộp Điều Ước ✨</h2>
-      <p class="section-sub">Bấm vào từng món quà nhỏ bên dưới để mở những lời chúc đặc biệt dành riêng cho em nhí yêu:</p>
-
-      <div class="wishes-grid">
-        <div class="wish-card" data-wish="🌸 Chúc Tuyết Anh luôn giữ mãi nụ cười rạng rỡ, xinh đẹp và tự tin trên mọi bước đường!">
-          <div class="wish-card-inner">
-            <div class="card-front">
-              <span class="card-icon">🌸</span>
-              <span class="card-label">Nhan sắc & Rạng rỡ</span>
-            </div>
-            <div class="card-back">
-              <p>Mở ra để xem lời chúc</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="wish-card" data-wish="💎 Chúc mọi mục tiêu, hoài bão và ước mơ trong tuổi mới của Tuyết Anh đều thành công rực rỡ!">
-          <div class="wish-card-inner">
-            <div class="card-front">
-              <span class="card-icon">🌟</span>
-              <span class="card-label">Sự nghiệp & Tương lai</span>
-            </div>
-            <div class="card-back">
-              <p>Mở ra để xem lời chúc</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="wish-card" data-wish="🍀 Chúc Tuyết Anh mỗi ngày trôi qua đều ngập tràn niềm vui, bình an, may mắn và hạnh phúc ngập tràn!">
-          <div class="wish-card-inner">
-            <div class="card-front">
-              <span class="card-icon">🍀</span>
-              <span class="card-label">May mắn & Bình an</span>
-            </div>
-            <div class="card-back">
-              <p>Mở ra để xem lời chúc</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="wish-card" data-wish="💖 Chúc Tuyết Anh luôn được yêu thương, trân trọng và bao bọc bởi những điều ngọt ngào nhất trên thế gian!">
-          <div class="wish-card-inner">
-            <div class="card-front">
-              <span class="card-icon">💖</span>
-              <span class="card-label">Yêu thương đong đầy</span>
-            </div>
-            <div class="card-back">
-              <p>Mở ra để xem lời chúc</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4: PHOTO MEMORIES WALL -->
-    <section class="gallery-section">
-      <h2 class="section-title">📸 Góc Kỷ Niệm Của Tuyết Anh</h2>
-      <p class="section-sub">Những khoảnh khắc đáng yêu và rạng rỡ nhất (Em nhí yêu có thể bấm nút máy ảnh 📷 ở góc trên để đổi ảnh thật)</p>
-
-      <div class="gallery-grid" id="gallery-container">
-        <!-- Default Polaroid 1 -->
-        <div class="polaroid-item">
-          <div class="pin">📌</div>
-          <div class="polaroid-img-wrapper">
-            <img src="photo1.jpg" alt="Tuyết Anh" class="polaroid-img" />
-          </div>
-          <div class="polaroid-caption">Nụ cười tỏa nắng ✨</div>
-        </div>
-
-        <!-- Default Polaroid 2 -->
-        <div class="polaroid-item rotate-right">
-          <div class="pin">📌</div>
-          <div class="polaroid-img-wrapper">
-            <img src="photo2.jpg" alt="Tuyết Anh" class="polaroid-img" />
-          </div>
-          <div class="polaroid-caption">Tuổi mới thêm rực rỡ 💖</div>
-        </div>
-
-        <!-- Default Polaroid 3 -->
-        <div class="polaroid-item rotate-left">
-          <div class="pin">📌</div>
-          <div class="polaroid-img-wrapper">
-            <img src="photo3.jpg" alt="Tuyết Anh" class="polaroid-img" />
-          </div>
-          <div class="polaroid-caption">Mãi ngọt ngào & yêu đời 🌸</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 5: CELEBRATION BUTTON & FIREWORKS TRIGGER -->
-    <section class="firework-action-section">
-      <div class="action-card">
-        <h3>Gửi ngàn pháo hoa chúc mừng Tuyết Anh! 🎆</h3>
-        <p>Bấm vào nút dưới đây để kích hoạt pháo hoa lấp lánh bầu trời</p>
-        <button id="firework-btn" class="glow-firework-btn">
-          <span>Bắn Pháo Hoa Ngay 🎆</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="page-footer">
-      <p>Made with all my heart for <strong>Tuyết Anh</strong> 💖</p>
-      <p class="footer-sub">Happy Birthday & Have the most wonderful year ahead!</p>
+    <!-- AESTHETIC FOOTER -->
+    <footer class="aesthetic-footer">
+      <div class="footer-heart">💖</div>
+      <p class="footer-main">Designed with love for <strong>Tuyết Anh</strong></p>
+      <p class="footer-sub">May this new chapter bring you endless smiles & magic moments ✨</p>
     </footer>
 
-  </main>
+  </div>
 
   <!-- POPUP MODAL FOR WISH CARDS -->
-  <div id="wish-modal" class="modal-overlay hidden">
-    <div class="modal-content">
+  <div id="wish-modal" class="modal-backdrop hidden">
+    <div class="aesthetic-modal">
       <button class="modal-close" id="modal-close-btn">&times;</button>
-      <div class="modal-icon">💌</div>
-      <h3 class="modal-title">Lời Chúc Dành Cho Tuyết Anh</h3>
-      <p class="modal-body" id="modal-wish-text"></p>
-      <button class="glow-btn" id="modal-confirm-btn">Nhận Lời Chúc 💖</button>
+      <div class="modal-stamp">💌</div>
+      <h3 class="modal-title">Lời Chúc Tặng Em Nhí Yêu</h3>
+      <p class="modal-message" id="modal-wish-text"></p>
+      <button class="modal-ok-btn" id="modal-ok-btn">Nhận Lời Chúc 💖</button>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
