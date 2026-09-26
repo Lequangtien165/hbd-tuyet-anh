@@ -3,17 +3,15 @@
  * Canvas Petals, Music Player, Bento Cake Blowout & Confetti
  */
 
-// --- 1. WEB AUDIO API SYNTHESIZER (Happy Birthday Melody) ---
-class AestheticAudioPlayer {
+// --- 1. SOUND EFFECTS & SYNTH FALLBACK (Web Audio API) ---
+class AestheticSoundFX {
   constructor() {
     this.ctx = null;
-    this.isPlaying = false;
+    this.isPlayingFallback = false;
     this.timerId = null;
     this.currentNoteIndex = 0;
-    this.audioElement = document.getElementById('bg-audio');
-    this.useAudioElement = false;
 
-    // Melody notes for "Happy Birthday" (warm music box / celesta)
+    // Melody notes for "Happy Birthday" (warm music box / celesta) as fallback
     this.melody = [
       { f: 261.63, d: 0.35, pause: 0.4 },  // C4
       { f: 261.63, d: 0.25, pause: 0.3 },  // C4
@@ -94,34 +92,15 @@ class AestheticAudioPlayer {
     });
   }
 
-  startMelody() {
-    this.init();
-    this.isPlaying = true;
-
-    if (this.audioElement && this.audioElement.currentSrc && !this.audioElement.error) {
-      const playPromise = this.audioElement.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          this.useAudioElement = true;
-        }).catch(() => {
-          this.useAudioElement = false;
-          this.startSynthMelody();
-        });
-        return;
-      }
-    }
-
-    this.startSynthMelody();
-  }
-
   startSynthMelody() {
-    this.useAudioElement = false;
+    this.init();
+    this.isPlayingFallback = true;
     this.currentNoteIndex = 0;
     this.scheduleNextNote();
   }
 
   scheduleNextNote() {
-    if (!this.isPlaying || this.useAudioElement) return;
+    if (!this.isPlayingFallback) return;
     const note = this.melody[this.currentNoteIndex];
     this.playBell(note.f, note.d);
 
@@ -131,29 +110,18 @@ class AestheticAudioPlayer {
     }, note.pause * 1000);
   }
 
-  stopMelody() {
-    this.isPlaying = false;
-    if (this.useAudioElement && this.audioElement) {
-      this.audioElement.pause();
-    }
+  stopSynthMelody() {
+    this.isPlayingFallback = false;
     if (this.timerId) {
       clearTimeout(this.timerId);
       this.timerId = null;
     }
   }
-
-  toggle() {
-    if (this.isPlaying) {
-      this.stopMelody();
-      return false;
-    } else {
-      this.startMelody();
-      return true;
-    }
-  }
 }
 
-const audioPlayer = new AestheticAudioPlayer();
+const soundFX = new AestheticSoundFX();
+// Compatibility alias for any existing callers
+const audioPlayer = soundFX;
 
 // --- 2. AMBIENT DREAMY SAKURA & STARDUST CANVAS ---
 const canvas = document.getElementById('ambient-canvas');
@@ -214,50 +182,137 @@ function animateAmbient() {
 }
 animateAmbient();
 
-// --- 3. MUSIC DOCK & SPOTIFY CONTROLS ---
+// --- 3. BACKGROUND MUSIC & SPOTIFY PLAYER LOGIC ---
+const bgAudio = document.getElementById('bg-audio');
 const musicBtn = document.getElementById('music-btn');
 const spotifyPlayToggle = document.getElementById('spotify-play-toggle');
 const playStateIcon = document.getElementById('play-state-icon');
+const playStateText = document.getElementById('play-state-text');
+const spotifyCover = document.getElementById('spotify-album-cover');
+const progressBarContainer = document.getElementById('progress-bar-container');
+const progressFill = document.getElementById('progress-fill');
+const currentTimeEl = document.getElementById('current-time');
+const durationTimeEl = document.getElementById('duration-time');
 const likeBtn = document.getElementById('like-btn');
 const likeCount = document.getElementById('like-count');
 
-function updateMusicUI(isPlaying) {
+// Helper to format seconds -> m:ss
+function formatTime(seconds) {
+  if (isNaN(seconds) || seconds < 0) return '0:00';
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+// Master UI state synchronization based on real audio state
+function syncPlayStateUI(isPlaying) {
   if (isPlaying) {
-    musicBtn.classList.add('active');
-    playStateIcon.textContent = '❚❚';
-    spotifyPlayToggle.querySelector('span:last-child').textContent = 'Pause';
+    if (musicBtn) musicBtn.classList.add('active');
+    if (playStateIcon) playStateIcon.textContent = '❚❚';
+    if (playStateText) playStateText.textContent = 'Pause';
+    if (spotifyCover) spotifyCover.classList.add('playing');
   } else {
-    musicBtn.classList.remove('active');
-    playStateIcon.textContent = '▶';
-    spotifyPlayToggle.querySelector('span:last-child').textContent = 'Play';
+    if (musicBtn) musicBtn.classList.remove('active');
+    if (playStateIcon) playStateIcon.textContent = '▶';
+    if (playStateText) playStateText.textContent = 'Play';
+    if (spotifyCover) spotifyCover.classList.remove('playing');
   }
 }
 
-musicBtn.addEventListener('click', () => {
-  const isPlaying = audioPlayer.toggle();
-  updateMusicUI(isPlaying);
-});
+// Sync progress bar and current timestamp with audio playback
+function syncProgressUI() {
+  if (!bgAudio || !bgAudio.duration || isNaN(bgAudio.duration)) return;
+  const percent = (bgAudio.currentTime / bgAudio.duration) * 100;
+  if (progressFill) progressFill.style.width = `${percent}%`;
+  if (currentTimeEl) currentTimeEl.textContent = formatTime(bgAudio.currentTime);
+}
 
-spotifyPlayToggle.addEventListener('click', () => {
-  const isPlaying = audioPlayer.toggle();
-  updateMusicUI(isPlaying);
-});
+// Wire native HTML5 Audio events (Single Source of Truth)
+if (bgAudio) {
+  bgAudio.addEventListener('play', () => syncPlayStateUI(true));
+  bgAudio.addEventListener('pause', () => syncPlayStateUI(false));
+  bgAudio.addEventListener('ended', () => syncPlayStateUI(false));
+  bgAudio.addEventListener('timeupdate', syncProgressUI);
 
-// Auto-start music on first user click anywhere (respecting browser audio policy)
-let hasInteracted = false;
-document.addEventListener('click', () => {
-  if (!hasInteracted) {
-    hasInteracted = true;
-    audioPlayer.startMelody();
-    updateMusicUI(true);
+  const updateDuration = () => {
+    if (bgAudio.duration && !isNaN(bgAudio.duration) && durationTimeEl) {
+      durationTimeEl.textContent = formatTime(bgAudio.duration);
+    }
+  };
+  bgAudio.addEventListener('loadedmetadata', updateDuration);
+  bgAudio.addEventListener('durationchange', updateDuration);
+
+  // If metadata is already cached / available
+  if (bgAudio.readyState >= 1 && bgAudio.duration) {
+    updateDuration();
   }
+}
+
+// Toggle Music Playback
+function toggleMusic() {
+  soundFX.init();
+
+  if (!bgAudio) return;
+
+  if (bgAudio.paused) {
+    const playPromise = bgAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.warn('HTML5 Audio playback blocked or failed, using synth fallback:', err);
+        soundFX.startSynthMelody();
+        syncPlayStateUI(true);
+      });
+    }
+  } else {
+    bgAudio.pause();
+    if (soundFX.isPlayingFallback) {
+      soundFX.stopSynthMelody();
+      syncPlayStateUI(false);
+    }
+  }
+}
+
+// Click handlers for toggles (dock pill and spotify play button)
+if (musicBtn) {
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMusic();
+  });
+}
+
+if (spotifyPlayToggle) {
+  spotifyPlayToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMusic();
+  });
+}
+
+// Interactive Seek Bar (click anywhere to seek)
+if (progressBarContainer) {
+  progressBarContainer.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!bgAudio || !bgAudio.duration || isNaN(bgAudio.duration)) return;
+    const rect = progressBarContainer.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const fraction = Math.max(0, Math.min(1, clickX / rect.width));
+    bgAudio.currentTime = fraction * bgAudio.duration;
+    syncProgressUI();
+    if (bgAudio.paused) {
+      bgAudio.play().catch(() => {});
+    }
+  });
+}
+
+// Unlock Web Audio context on first user interaction
+document.addEventListener('click', () => {
+  soundFX.init();
 }, { once: true });
 
 // Like button toggle
 let isLiked = false;
 likeBtn.addEventListener('click', () => {
   isLiked = !isLiked;
-  audioPlayer.playChime();
+  soundFX.playChime();
   if (isLiked) {
     likeCount.textContent = '1,000,000 ❤️';
     likeBtn.style.background = '#fecdd3';
@@ -291,7 +346,12 @@ function blowOutCandle() {
   cakeHint.textContent = 'Ước nguyện đã thành hiện thực! 🌸';
   wishBanner.classList.remove('hidden');
 
-  audioPlayer.playChime();
+  soundFX.playChime();
+
+  // If music isn't playing yet, celebrate by starting the birthday song
+  if (bgAudio && bgAudio.paused) {
+    toggleMusic();
+  }
 
   if (typeof confetti === 'function') {
     confetti({

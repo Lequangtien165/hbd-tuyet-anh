@@ -465,6 +465,18 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   flex-shrink: 0;
   position: relative;
+  transition: border-radius 0.6s ease, box-shadow 0.4s ease;
+}
+
+.spotify-album-cover.playing {
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(244, 63, 94, 0.3), 0 0 0 4px #ffffff, 0 0 0 6px #fecdd3;
+  animation: vinylSpin 14s linear infinite;
+}
+
+@keyframes vinylSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .album-art {
@@ -497,24 +509,24 @@ body {
 
 .progress-bar {
   width: 100%;
-  height: 4px;
+  height: 6px;
   background: #f1e6e9;
-  border-radius: 2px;
-  overflow: hidden;
+  border-radius: 3px;
+  cursor: pointer;
   position: relative;
+  transition: height 0.2s ease;
+}
+
+.progress-bar:hover {
+  height: 8px;
 }
 
 .progress-fill {
-  width: 38%;
+  width: 0%;
   height: 100%;
-  background: var(--rose-primary);
-  border-radius: 2px;
-  animation: progressMove 8s infinite alternate ease-in-out;
-}
-
-@keyframes progressMove {
-  0% { width: 20%; }
-  100% { width: 85%; }
+  background: linear-gradient(90deg, #fb7185, #f43f5e);
+  border-radius: 3px;
+  transition: width 0.12s linear;
 }
 
 .progress-time {

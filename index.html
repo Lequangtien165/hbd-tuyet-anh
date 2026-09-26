@@ -20,13 +20,13 @@
 
   <!-- Floating Quick Actions -->
   <div class="floating-dock">
-    <button id="music-btn" class="dock-pill active" title="Bật/Tắt nhạc sinh nhật">
+    <button id="music-btn" class="dock-pill" title="Phát/Tạm dừng nhạc">
       <span class="music-bars">
         <span class="bar b1"></span>
         <span class="bar b2"></span>
         <span class="bar b3"></span>
       </span>
-      <span id="music-label">Bobui Freestyle</span>
+      <span id="music-label">Khúc Hát Mừng Sinh Nhật</span>
     </button>
     <button id="photo-upload-btn" class="dock-pill" title="Tải ảnh mới">
       <span>📷</span>
@@ -35,9 +35,9 @@
   </div>
   <input type="file" id="image-input" accept="image/*" multiple style="display: none;" />
 
-  <!-- Hidden Audio Player for custom MP3 with Web Audio Synth fallback -->
-  <audio id="bg-audio" loop preload="auto">
-    <source src="music.mp3" type="audio/mp3">
+  <!-- Audio Player with direct src for full cross-browser reliability -->
+  <audio id="bg-audio" src="music.mp3" preload="metadata" loop>
+    <source src="music.mp3" type="audio/mpeg">
   </audio>
 
   <!-- MAIN SCRAPBOOK CONTAINER -->
@@ -135,20 +135,20 @@
       <div class="bento-card spotify-card">
         <div class="card-tag">🎧 NOW PLAYING</div>
         <div class="spotify-inner">
-          <div class="spotify-album-cover">
+          <div class="spotify-album-cover" id="spotify-album-cover">
             <img src="photo1.jpg" alt="Tuyết Anh" class="album-art" />
             <div class="playing-pulse"></div>
           </div>
           <div class="spotify-info">
-            <div class="track-title">Bobui Freestyle ✨</div>
-            <div class="track-artist">Anh Phan • Dành riêng cho Tuyết Anh</div>
+            <div class="track-title">Khúc Hát Mừng Sinh Nhật ✨</div>
+            <div class="track-artist">Phan Đinh Tùng • Dành riêng cho Tuyết Anh</div>
             <div class="spotify-progress-wrap">
-              <div class="progress-bar">
-                <div class="progress-fill"></div>
+              <div class="progress-bar" id="progress-bar-container" title="Bấm để tua bài hát">
+                <div class="progress-fill" id="progress-fill"></div>
               </div>
               <div class="progress-time">
-                <span>0:26</span>
-                <span>3:14</span>
+                <span id="current-time">0:00</span>
+                <span id="duration-time">3:29</span>
               </div>
             </div>
             <div class="spotify-controls">
@@ -157,8 +157,8 @@
                 <span id="like-count">999k+</span>
               </button>
               <button class="play-pill-btn" id="spotify-play-toggle">
-                <span id="play-state-icon">❚❚</span>
-                <span>Pause</span>
+                <span id="play-state-icon">▶</span>
+                <span id="play-state-text">Play</span>
               </button>
             </div>
           </div>
