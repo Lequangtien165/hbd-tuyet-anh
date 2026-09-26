@@ -21,9 +21,9 @@
   --gold-warm: #fef08a;
   --gold-text: #b45309;
   
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
-  --font-hand: 'Caveat', cursive;
+  --font-hand: 'Dancing Script', cursive;
   
   --shadow-soft: 0 10px 35px rgba(140, 90, 100, 0.08);
   --shadow-hover: 0 16px 45px rgba(140, 90, 100, 0.14);
