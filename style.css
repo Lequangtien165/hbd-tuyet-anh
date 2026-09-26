@@ -465,6 +465,18 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   flex-shrink: 0;
   position: relative;
+  transition: border-radius 0.6s ease, transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.spotify-album-cover.playing {
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(244, 63, 94, 0.3), 0 0 0 4px #ffffff, 0 0 0 6px #fecdd3;
+  animation: vinylSpin 14s linear infinite;
+}
+
+@keyframes vinylSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .album-art {
@@ -497,24 +509,24 @@ body {
 
 .progress-bar {
   width: 100%;
-  height: 4px;
+  height: 6px;
   background: #f1e6e9;
-  border-radius: 2px;
-  overflow: hidden;
+  border-radius: 3px;
+  cursor: pointer;
   position: relative;
+  transition: height 0.2s ease;
+}
+
+.progress-bar:hover {
+  height: 8px;
 }
 
 .progress-fill {
-  width: 38%;
+  width: 0%;
   height: 100%;
-  background: var(--rose-primary);
-  border-radius: 2px;
-  animation: progressMove 8s infinite alternate ease-in-out;
-}
-
-@keyframes progressMove {
-  0% { width: 20%; }
-  100% { width: 85%; }
+  background: linear-gradient(90deg, #fb7185, #f43f5e);
+  border-radius: 3px;
+  transition: width 0.15s ease-out;
 }
 
 .progress-time {
@@ -954,10 +966,95 @@ body {
   margin-top: 4px;
 }
 
-/* ANIMATIONS */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+/* LIGHTBOX MODAL */
+.lightbox-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 10, 15, 0.82);
+  backdrop-filter: blur(12px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+  cursor: pointer;
+}
+
+.lightbox-modal.hidden {
+  display: none;
+}
+
+.lightbox-content {
+  background: #ffffff;
+  padding: 16px 16px 26px 16px;
+  border-radius: 8px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+  max-width: 90vw;
+  max-height: 90vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: popUp 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: default;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  color: #881337;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+
+.lightbox-close:hover {
+  transform: scale(1.15) rotate(9deg);
+}
+
+.lightbox-img {
+  max-width: 80vw;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.lightbox-caption {
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  color: #3f2e32;
+  margin-top: 14px;
+  text-align: center;
+}
+
+/* CANDLE SMOKE PUFF */
+.smoke-puff {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(160, 160, 160, 0.55);
+  border-radius: 50%;
+  filter: blur(3px);
+  pointer-events: none;
+  animation: smokeRise 1.4s ease-out forwards;
+}
+
+@keyframes smokeRise {
+  0% { transform: translate(-50%, 0) scale(1); opacity: 0.8; }
+  50% { transform: translate(-30%, -28px) scale(2.6); opacity: 0.45; }
+  100% { transform: translate(-65%, -58px) scale(4.2); opacity: 0; }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* RESPONSIVE */

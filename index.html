@@ -143,12 +143,12 @@
             <div class="track-title">Happy Birthday To You ✨</div>
             <div class="track-artist">Dành riêng cho Tuyết Anh</div>
             <div class="spotify-progress-wrap">
-              <div class="progress-bar">
-                <div class="progress-fill"></div>
+              <div class="progress-bar" id="progress-bar-container" title="Bấm để tua bài hát">
+                <div class="progress-fill" id="progress-fill"></div>
               </div>
               <div class="progress-time">
-                <span>0:26</span>
-                <span>3:14</span>
+                <span id="current-time">0:00</span>
+                <span id="duration-time">--:--</span>
               </div>
             </div>
             <div class="spotify-controls">
@@ -289,6 +289,15 @@
       <h3 class="modal-title">Lời Chúc Tặng Em Nhí Yêu</h3>
       <p class="modal-message" id="modal-wish-text"></p>
       <button class="modal-ok-btn" id="modal-ok-btn">Nhận Lời Chúc 💖</button>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL FOR POLAROID PHOTOS -->
+  <div id="lightbox-modal" class="lightbox-modal hidden">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightbox-close-btn">&times;</button>
+      <img id="lightbox-img" src="" alt="Tuyết Anh" class="lightbox-img" />
+      <p id="lightbox-caption" class="lightbox-caption"></p>
     </div>
   </div>
 
