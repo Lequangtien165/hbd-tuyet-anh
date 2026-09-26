@@ -317,7 +317,7 @@ const letterText = `Gửi Tuyết Anh yêu quý,
 
 Hôm nay là một ngày thật dịu dàng và đặc biệt — ngày đánh dấu sự xuất hiện của một cô gái vô cùng xinh xắn, ngọt ngào và ấm áp.
 
-Thêm một tuổi mới, chúc Tuyết Anh luôn giữ trọn nụ cười tươi tắn trên môi. Mong bạn luôn tìm thấy niềm vui trong những điều giản đơn nhất, tự tin bước đi trên con đường mình đã chọn và gặt hái thật nhiều thành công rực rỡ.
+Thêm một tuổi mới, chúc Tuyết Anh luôn giữ trọn nụ cười tươi tắn trên môi. Mong em nhí yêu luôn tìm thấy niềm vui trong những điều giản đơn nhất, tự tin bước đi trên con đường mình đã chọn và gặt hái thật nhiều thành công rực rỡ.
 
 Dù ngoài kia có những ngày nắng hay mưa, mong rằng trái tim Tuyết Anh sẽ luôn bình yên, luôn được yêu thương, chiều chuộng và bao bọc bởi những điều tốt đẹp nhất.
 
